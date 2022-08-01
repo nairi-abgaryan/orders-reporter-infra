@@ -2,7 +2,7 @@
 ## Introduction
 Repository contains docker compose file for deploying the orders-reporter distributed system.
 
-## Read more information
+## Services
 `Orders Analyser service` -> Orders analyser is a part of reporter distributed system.
 The service is responsible for getting data from orders API
 using this URL.
@@ -17,7 +17,7 @@ If Redis does not provide data, it requests to shared MongoDB.
 
 Link: https://github.com/nairi-abgaryan/orders-reporter-infra/tree/master/product-reporter
 
-## Architecture Diagrams 
+## Architecture Diagram
 
 
 ![docs/d.png](./docs/d.png)
