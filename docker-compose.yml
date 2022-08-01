@@ -1,0 +1,62 @@
+version: '3.7'
+
+services:
+  order_analyser:
+    build: ./orders-analyser/
+    container_name: order_analyser
+    ports:
+      - "8080:8080"
+    environment:
+      DB_CONNECTION_URL: mongodb://mongo-container:27017/orders
+    networks:
+      - local_network
+
+  product_reporter:
+    build: ./product-reporter/
+    ports:
+      - "8081:8081"
+    environment:
+      NODE_ENV: development
+      container_name: product_reporter
+      PORT: 8081
+      REDIS_URL: redis://:password123@redis:6379/
+      DB_CONNECTION_URL: mongodb://mongo-container:27017/orders
+      MQ_URL: amqp://rabbitmq:5672
+    networks:
+      - local_network
+
+  database:
+    container_name: mongo-container
+    image: mongo
+    environment:
+      POSTGRES_DB: messaging_local
+      POSTGRES_USER: user_messaging
+      POSTGRES_PASSWORD: password_messaging
+    ports:
+      - "27017-27019:27017-27019"
+    volumes:
+        - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
+        - ./mongo-volume:/data/db
+    networks:
+      - local_network
+  redis:
+    restart: always
+    container_name: redis
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    networks:
+      - local_network
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - local_network
+
+networks:
+  local_network:
+    driver: bridge
