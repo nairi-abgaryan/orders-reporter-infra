@@ -50,7 +50,7 @@ http://localhost:3001/products/orders-count-from-yesterday/top
 
 ## Docker compose 
 
-```docker   
+```yaml   
 version: '3.7'
 
 services:
