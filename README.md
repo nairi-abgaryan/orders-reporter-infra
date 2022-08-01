@@ -7,7 +7,7 @@ Repository contains docker compose file for deploying the orders-reporter distri
 The service is responsible for getting data from orders API
 using this URL.
 
-Github: ./orders-analyser
+Link: https://github.com/nairi-abgaryan/orders-reporter-infra/tree/master/orders-analyser
 
 
 
@@ -15,7 +15,7 @@ Github: ./orders-analyser
 This reader service is responsible for subscribing to the RabbitMQ message broker for receiving reported data from the orders analyser service. Data stored in Redis cache for instant response.
 If Redis does not provide data, it requests to shared MongoDB.
 
-Github: ./product-reporter
+Link: https://github.com/nairi-abgaryan/orders-reporter-infra/tree/master/product-reporter
 
 ## Architecture Diagrams 
 
