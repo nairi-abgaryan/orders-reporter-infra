@@ -1,17 +1,25 @@
 
 ## Introduction
-Orders analyser is a part of reporter distributed system.
+_Orders analyser_ is a part of the reporter distributed system.
 The service is responsible for getting data from orders API
 using this URL.
 https://recruitment-api.dev.flipfit.io/orders?_page=1&_limit=1
-Then after analysing data, it saves it in the data in the MongoDB database.
 
-After analysis, if the top 10 ordered and the top 10 profitable products
-differentiate from previous ones, the service triggers an event about that change.
-## Architecture Diagrams 
+After receiving and analysing data, if the top 10 ordered products </br>
+are different from previous ones, the service triggers an MQ Event about that change!
 
-![docs/d.png](docs/d.png)
 
+After receiving and analysing data, If the top 10 profitable products </br>
+are different from previous ones, the service triggers an MQ Event about that change!
+
+
+After receiving and analysing data, If the top 10 top ordered products </br>
+are different from previous ones from yesterday, the service triggers an MQ Event about that change!
+<br>_**important note_**
+Each time system computes and triggers MQ event about data from yesterday. <br>
+In case of changing requirements for a dynamic date, the
+solution will not work.  
+For that case, each request from the client will need to connect to DB to count results.
 
 ## Datastores in use
 MongoDb - Used as a persistent database to keep normalized data to provide statistics
@@ -19,15 +27,14 @@ MongoDb - Used as a persistent database to keep normalized data to provide stati
 ## Environment variables
 
 ```bash
-
-REDIS_URL=redis://:password123@127.0.0.1:6380/
 DB_CONNECTION_URL=mongodb://localhost:27017/orders
+MQ_URL=amqp://localhost:5672
 
 ```
 ## DB Schemas
 ```js
 // Schema for orders history. 
-// We are using this schema for getting the top profitable products from yesterday, or if needed, from another date
+// The Order schema is used for getting the top profitable products by date(yesterday)
 export class Order {
 	id: string; // product id
 	date: Date; // Order date, indexed
@@ -51,13 +58,11 @@ class Pagination {
 
 ```
 
-
 **The system computes 100 orders products in each 5 second.**
 
 Achieving final data results will take _20000/100*5_  seconds. 
 
 After finishing the computation service will continue to do requests each second to keep data up to date.
 
-
+**Indeed there are a lot of other architectural solutions to this problem **
 Depends on what type of problem we need to solve in the future the architecture can be changed
-**Indeed there are a lot of excellent architectures for this problem **

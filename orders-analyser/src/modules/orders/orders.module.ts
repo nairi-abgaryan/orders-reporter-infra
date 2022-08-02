@@ -25,7 +25,7 @@ import { OrdersCounterByDate } from '../../events/triggers/orders-counter-by-dat
         name: PRODUCT_REPORTER_SERVICE,
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [process.env.MQ_URL],
           queue: 'orders_report_queue',
           queueOptions: {
             durable: false,
