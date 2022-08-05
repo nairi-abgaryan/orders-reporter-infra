@@ -30,9 +30,9 @@ services:
     container_name: mongo-container
     image: mongo
     environment:
-      POSTGRES_DB: messaging_local
-      POSTGRES_USER: user_messaging
-      POSTGRES_PASSWORD: password_messaging
+      MONGO_DB: messaging_local
+      MONGO_USER: user_messaging
+      MONGO_PASSWORD: password_messaging
     ports:
       - "27017-27019:27017-27019"
     volumes:
